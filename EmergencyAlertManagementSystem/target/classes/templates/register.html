@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        body {
+            background-image: url('/images/register-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Register</h2>
+        <form th:action="@{/register}" th:object="${user}" method="post">
+            <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input type="text" th:field="*{username}" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" th:field="*{password}" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Name</label>
+                <input type="text" th:field="*{name}" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" th:field="*{email}" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Latitude</label>
+                <input type="number" step="any" th:field="*{latitude}" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Longitude</label>
+                <input type="number" step="any" th:field="*{longitude}" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+    </div>
+</body>
+</html>

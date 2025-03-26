@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Check Status</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        body {
+            background-image: url('/images/check-status-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Check Alert Status</h2>
+        <div th:if="${token}">
+            <p>Your Anonymous Token: <strong th:text="${token}"></strong></p>
+            <p>Save this token to check the status later.</p>
+        </div>
+        <form th:action="@{/check-status}" method="post">
+            <div class="mb-3">
+                <label class="form-label">Enter Token</label>
+                <input type="text" name="token" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Check Status</button>
+        </form>
+        <div th:if="${alert}">
+            <h3 class="mt-3">Alert Details</h3>
+            <p>Description: <span th:text="${alert.description}"></span></p>
+            <p>Status: <span th:text="${alert.status}"></span></p>
+            <p>Location: <span th:text="${alert.latitude + ', ' + alert.longitude}"></span></p>
+            <p>Responder: <span th:text="${alert.responder != null ? alert.responder.name : 'Not Assigned'}"></span></p>
+        </div>
+        <a th:href="@{/login}" class="btn btn-secondary mt-3">Back to Login</a>
+    </div>
+</body>
+</html>

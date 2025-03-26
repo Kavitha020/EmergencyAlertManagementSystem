@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Anonymous Alert</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        body {
+            background-image: url('/images/anonymous-alert-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Submit Anonymous Alert</h2>
+        <form th:action="@{/anonymous}" th:object="${alert}" method="post">
+            <div class="mb-3">
+                <label class="form-label">Description</label>
+                <input type="text" th:field="*{description}" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Alert Type</label>
+                <select th:field="*{alertType.id}" class="form-select" required>
+                    <option value="">Select Type</option>
+                    <option th:each="type : ${alertTypes}" th:value="${type.id}" th:text="${type.name}"></option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Latitude</label>
+                <input type="number" step="any" th:field="*{latitude}" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Longitude</label>
+                <input type="number" step="any" th:field="*{longitude}" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a th:href="@{/login}" class="btn btn-secondary">Back to Login</a>
+        </form>
+    </div>
+</body>
+</html>

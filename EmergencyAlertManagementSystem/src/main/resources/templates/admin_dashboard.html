@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        body {
+            background-image: url('/images/admin-dashboard-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Admin Dashboard</h2>
+        <a th:href="@{/logout}" class="btn btn-secondary mb-3">Logout</a>
+        <h3>All Alerts</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Location</th>
+                    <th>User</th>
+                    <th>Responder</th>
+                    <th>Assign</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="alert : ${alerts}">
+                    <td th:text="${alert.id}"></td>
+                    <td th:text="${alert.description}"></td>
+                    <td th:text="${alert.status}"></td>
+                    <td th:text="${alert.latitude + ', ' + alert.longitude}"></td>
+                    <td th:text="${alert.user != null ? alert.user.name : 'Anonymous'}"></td>
+                    <td th:text="${alert.responder != null ? alert.responder.name : 'Not Assigned'}"></td>
+                    <td>
+                        <form th:action="@{/admin/assign}" method="post">
+                            <input type="hidden" name="alertId" th:value="${alert.id}">
+                            <select name="responderId" class="form-select d-inline w-auto">
+                                <option value="">Select Responder</option>
+                                <option th:each="responder : ${responders}" th:value="${responder.id}" th:text="${responder.name}"></option>
+                            </select>
+                            <button type="submit" class="btn btn-primary">Assign</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(alerts)}">
+                    <td colspan="7">No alerts found.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

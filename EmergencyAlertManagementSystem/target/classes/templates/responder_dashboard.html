@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Responder Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        body {
+            background-image: url('/images/responder-dashboard-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Welcome, <span th:text="${user.name}"></span></h2>
+        <a th:href="@{/logout}" class="btn btn-secondary mb-3">Logout</a>
+        <h3>Your Assigned Alerts</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Location</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="alert : ${alertService.getResponderAlerts(user)}">
+                    <td th:text="${alert.id}"></td>
+                    <td th:text="${alert.description}"></td>
+                    <td th:text="${alert.status}"></td>
+                    <td th:text="${alert.latitude + ', ' + alert.longitude}"></td>
+                    <td>
+                        <form th:action="@{/responder/accept}" method="post" style="display:inline;">
+                            <input type="hidden" name="alertId" th:value="${alert.id}">
+                            <button type="submit" class="btn btn-success" th:disabled="${alert.status != 'ASSIGNED'}">Accept</button>
+                        </form>
+                        <form th:action="@{/responder/reject}" method="post" style="display:inline;">
+                            <input type="hidden" name="alertId" th:value="${alert.id}">
+                            <button type="submit" class="btn btn-danger" th:disabled="${alert.status != 'ASSIGNED'}">Reject</button>
+                        </form>
+                        <form th:action="@{/responder/resolve}" method="post" style="display:inline;">
+                            <input type="hidden" name="alertId" th:value="${alert.id}">
+                            <button type="submit" class="btn btn-primary" th:disabled="${alert.status != 'ACCEPTED'}">Resolve</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(alertService.getResponderAlerts(user))}">
+                    <td colspan="5">No alerts assigned.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

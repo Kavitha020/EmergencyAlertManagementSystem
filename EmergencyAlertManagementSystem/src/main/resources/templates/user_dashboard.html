@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        body {
+            background-image: url('/images/user-dashboard-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Welcome, <span th:text="${user.name}"></span></h2>
+        <a th:href="@{/user/create-alert}" class="btn btn-primary mb-3">Create Alert</a>
+        <a th:href="@{/logout}" class="btn btn-secondary mb-3">Logout</a>
+        <h3>Your Alerts</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Location</th>
+                    <th>Responder</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="alert : ${alertService.getUserAlerts(user)}">
+                    <td th:text="${alert.id}"></td>
+                    <td th:text="${alert.description}"></td>
+                    <td th:text="${alert.status}"></td>
+                    <td th:text="${alert.latitude + ', ' + alert.longitude}"></td>
+                    <td th:text="${alert.responder != null ? alert.responder.name : 'Not Assigned'}"></td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(alertService.getUserAlerts(user))}">
+                    <td colspan="5">No alerts found.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
